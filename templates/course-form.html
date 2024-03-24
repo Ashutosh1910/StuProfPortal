@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="post" class="needs-validation" action="{%url 'create-course' %}">
+    {% csrf_token %}
+
+    {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            <strong>Error!</strong> Please correct the following errors.
+            <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    
+    <div class="form-group">
+        <label for="{{ form.course_name.id_for_label }}">Course Name</label>
+        {{ form.course_name }}
+    </div>
+
+    
+    <div class="form-group">
+        <label for="{{ form.course_units.id_for_label }}">Course Units</label>
+        {{ form.course_units }}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.course_code.id_for_label }}">Course Code</label>
+        {{ form.course_code }}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.CDC_to.id_for_label }}">Compulsary To </label>
+        {{ form.CDC_to }}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.under_department.id_for_label }}">Under Department</label>
+        {{ form.under_department }}
+    </div>
+
+    
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
+
+
+
+{% endblock %}

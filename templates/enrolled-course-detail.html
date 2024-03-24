@@ -1,0 +1,80 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title">{{ enrolled_course.under_course.course_name }}</h1>
+                    <p class="card-text">Units: {{ enrolled_course.under_course.course_units }}</p>
+                    <p class="card-text">Grade: {{ enrolled_course.student_grade }}</p>
+                    <p class="card-text">Taught by: {{ enrolled_course.under_course.taught_by.user.username }}</p>
+
+
+                </div>
+            </div>
+
+            <!-- Announcements -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    Announcements
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for announcement in enrolled_course.under_course.announcement_set.all %}
+                    <li class="list-group-item">Title: {{ announcement.title }}
+                    <p class="list-group-item">Content: {{ announcement.description }}</p>
+                   <p>Attachment:</p> <a href="{%url 'announcement-download' pk=announcement.pk%}"><p >{{announcement.attached_file.name}} </p></a>
+                    <p class="list-group-item">Posted at: {{ announcement.posted_at }}</p>
+
+
+
+                    </li>
+
+                    {% empty %}
+                    <li class="list-group-item text-muted">No announcements found.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Content -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    Content
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for content in enrolled_course.under_course.study_material_set.all %}
+                    <li class="list-group-item">{{ content.title }}
+                        <a href="{%url 'material-download' content.pk%}"><p>{{content.material}}</p></a>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item text-muted">No content found.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Evaluations -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    Evaluations
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for evaluation in enrolled_course.course_eval_set.all %}
+                    <li class="list-group-item">{{ evaluation.of_eval.eval_name }}
+                    <p class="list-group-item">Marks:{{evaluation.value}}/{{ evaluation.of_eval.total_marks }}</p>
+
+                    </li>
+
+                    {% empty %}
+                    <li class="list-group-item text-muted">No evaluations found.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+

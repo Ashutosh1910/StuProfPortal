@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>{{ eval.eval_name }} of {{ eval.of_course.course_name }} </h1> 
+    
+    <div class="card mt-3">
+        <div class="card-body">
+            <h2>Mark students out of {{eval.total_marks}}</h2>
+           
+                <ul class="list-group list-group-flush">
+                    {% for student_eval in eval.course_eval_set.all %}
+                    <form action="{% url 'mark-student' pk=eval.pk pk2=student_eval.pk%}" method="post">
+                        {% csrf_token %}
+                        <li class="list-group-item">
+                            <div class="row align-items-center">
+                                <div class="col">{{ student_eval.of_student.enrolled_student.user.first_name }}</div>
+                                <div class="col">
+                                    <input type="number" class="form-control" name="eval_id{{ student_eval.pk }}" value={{student_eval.value}}>
+                                </div>
+                            </div>
+                        </li>
+                        <button type="submit" class="btn btn-primary mt-3"> Mark</button>
+                        </form>
+                    {% empty %}
+                        <li class="list-group-item text-muted">No students found.</li>
+                    {% endfor %}
+                    <a class="btn btn-primary mt-3" href="{%url 'course_detail' eval.of_course.pk%}"> Back to  Course</a>
+                    
+
+                </ul>
+               
+        </div>
+    </div>
+</div>
+{% endblock %}

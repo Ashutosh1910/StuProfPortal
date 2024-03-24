@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form action="{% url 'choose-electives' %}" method="post" class="mt-4">
+    {% csrf_token %}
+    <div class="form-group">
+        {{ form.electives_available.label_tag }}
+        <div class="form-check">
+            {% for checkbox in form.electives_available %}
+            <div class="form-check">
+                {{ checkbox }}
+                <label class="form-check-label" for="{{ checkbox.id_for_label }}"> </label>
+            </div>
+            {% endfor %}
+        </div>
+        {% if form.electives_available.errors %}
+            <div class="invalid-feedback">
+                {% for error in form.electives_available.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="mt-3">
+        <button type="submit" class="btn btn-primary">Select</button>
+    </div>
+</form>
+{% endblock %}

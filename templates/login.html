@@ -1,0 +1,18 @@
+{%extends 'base.html'%}
+{%block login%}
+<div class="container mt-5">
+    <legend style="text-align: center;">
+      <div class="content-section bg-info text-dark rounded p-4">
+        <fieldset style="text-align: center; border: 2px solid red; padding: 20px;">
+          <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="mt-3">
+              <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+          </form>
+        </fieldset>
+      </div>
+    </legend>
+  </div>
+  {%endblock%}

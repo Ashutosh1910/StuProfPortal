@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title text-center">{{ course.course_name }}</h1>
+                    <p class="card-text text-center"><strong>Units:</strong> {{ course.course_units }}</p>
+                    <div class="text-center">
+                        <a href="{% url 'create-eval' course.pk %}" class="btn btn-primary btn-sm">Create Evaluation</a>
+                        <a href="{% url 'course-announcement' course.pk %}" class="btn btn-info btn-sm">Post Announcement</a>
+                        <a href="{% url 'create-content' course.pk %}" class="btn btn-success btn-sm">Post Material</a>
+                    </div>
+                    <p class="card-text text-center mt-3"><strong>No. of students enrolled:</strong> {{  course.enrolled_course_set.all.count }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-4">
+        <div class="card-header">
+            Enrolled Students
+        </div>
+        <ul class="list-group list-group-flush">
+            {% for enrolled_course in course.enrolled_course_set.all %}
+                <li class="list-group-item">
+                    <div class="row align-items-center">
+                        <div class="col">{{ enrolled_course.enrolled_student.user.first_name }}</div>
+                        <div class="col">{{ enrolled_course.enrolled_student.bits_id }}</div>
+
+                        <div class="col">Grade: {{ enrolled_course.student_grade }}</div>
+                        <div class="col">
+                            <form action="{% url 'grade-student' pk=course.pk pk2=enrolled_course.pk %}" method="post">
+                                {% csrf_token %}
+                                <div class="form-group mb-0">
+                                    <select class="form-control form-control-sm" name="grade_id{{enrolled_course.pk}}">
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                        <option value="D">D</option>
+                                        <option value="F">F</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-sm mt-2">Grade</button>
+                            </form>
+                        </div>
+                        <div>
+                            <a href="{%url 'remove-student' pk=course.pk pk2=enrolled_course.enrolled_student.pk %}"  class="btn btn-danger" id= "delete-link{{enrolled_course.pk}}">Remove from Course</a>
+                            <script>
+                                document.getElementById('delete-link{{enrolled_course.pk}}').addEventListener('click', function(e) {
+                                    if (!confirm('Do you really want to remove this student from your course ?')) {
+                                        e.preventDefault(); 
+                                    }
+                                });
+                                </script>
+                                                       
+                        </div>
+                    </div>
+                </li>
+            {% empty %}
+                <li class="list-group-item text-muted">No students enrolled yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title">Evaluations</h1>
+                <ul class="list-group list-group-flush">
+                    {% for eval in course.evaluation_set.all %}
+                        <li class="list-group-item">{{ eval.eval_name }}</li>
+                        <a href="{% url 'eval_detail' pk=eval.pk  %}">
+                            <button class="btn btn-primary btn-sm mt-2">See details</button>
+                        </a>
+                    {% empty %}
+                        <li class="list-group-item text-muted">No evaluations</li>
+                    {% endfor %}
+                </ul>
+            </div>        
+        </div>
+    </div>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title">Not Enrolled Students</h1>
+                <ul class="list-group list-group-flush">
+                    {% for student in not_enrolled_students %}
+                        <li class="list-group-item">{{ student.user.first_name }}({{student.bits_id}})</li>
+                        <a href="{% url 'add-student' pk=course.pk pk2=student.pk %}">
+                            <button class="btn btn-primary btn-sm mt-2">Add Student</button>
+                        </a>
+                    {% empty %}
+                        <li class="list-group-item text-muted">All students added</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <a class="btn btn-primary mt-3" href="{%url 'ProfHome' %}">View all courses</a>
+   
+
+</div>
+
+{% endblock %}

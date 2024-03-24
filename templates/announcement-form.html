@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data" action="{% url 'course-announcement' pk=course %}">
+    {% csrf_token %}
+    <!-- Title -->
+    <div class="form-group">
+        <label for="{{ form.title.id_for_label }}">Title</label>
+        {{ form.title }}
+        <div class="invalid-feedback">
+            Please provide a title.
+        </div>
+    </div>
+
+    <!-- Description -->
+    <div class="form-group">
+        <label for="{{ form.description.id_for_label }}">Description</label>
+        {{ form.description }}
+        <div class="invalid-feedback">
+            Please provide a description.
+        </div>
+    </div>
+
+    <!-- Attached File -->
+    <div class="form-group">
+        <label for="{{ form.attached_file.id_for_label }}">Attached File</label>
+        {{ form.attached_file }}
+        <div class="invalid-feedback">
+            Please select a file.
+        </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-primary">Announce</button>
+</form>
+{% endblock %}

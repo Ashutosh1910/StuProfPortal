@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="post" action={% url 'create-content' pk=pk %} enctype='multipart/form-data'>
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="{{ form.title.id_for_label }}">Title</label>
+        {{ form.title}}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.material.id_for_label }}">Material</label>
+        {{ form.material }}
+    </div>
+    <button type="submit" class="btn btn-primary">Post</button>
+</form>
+
+{% endblock %}

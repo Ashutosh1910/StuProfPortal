@@ -1,0 +1,102 @@
+{% load socialaccount %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}EduPortal{% endblock %}</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <style>
+        .login-option {
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="">EduPortal</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                {%if request.user.is_authenticated%}
+                <li class="nav-item">
+                    <a class="nav-link" href="{%url 'LogoutPage'%}">Logout</a>
+                </li>
+                {%else%}
+                <li class="nav-item">
+                    <a class="nav-link" href="{%url 'login-page'%}">Login</a>
+                </li>
+                {%endif%}
+                {%if request.user.profprofile%}
+                <li class="nav-item">
+                    <a class="nav-link" href="{%url 'create-course' %}">Add Course</a>
+                </li>{%endif%}
+                
+                <!-- Add more navigation items as needed -->
+            </ul>
+        </div>
+    </nav>
+    {% if messages %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+    <!-- Page Content -->
+    <div class="container mt-5">
+        {% if request.user.is_authenticated %}
+        {% block content %}
+        <!-- Content goes here -->
+        {% endblock %}
+        {% else %}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="login-option">
+                    <h3 class="text-center">Student Login</h3>
+                    <div class="text-center">
+                        <p>Sign in with Google:</p>
+                        <a href="{% provider_login_url 'google' method='oauth2' %}" class="btn btn-primary btn-lg">Login with Gmail</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="login-option">
+                    <h3 class="text-center">Professor Login</h3>
+                    <div class="text-center">
+                        <p>Login with your credentials:</p>
+                        <a href="{% url 'LoginPage' %}" class="btn btn-primary btn-lg">Professor Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {%block login%}{%endblock%}
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

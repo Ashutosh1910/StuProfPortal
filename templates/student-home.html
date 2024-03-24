@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>NAME:{{request.user.first_name}}</h1>
+<h1>Bits ID:{{request.user.student_profile.bits_id}}</h1>
+
+<h1>Your Courses</h1>
+<div class="row">
+    <div class="col-md-4">
+        {%for course in student_courses%}
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{course.course_name}}</h5>
+          <p class="card-text">Grade:{{course.student_grade}}</p>
+          <a href={%url 'enrolled-course-detail' course.pk%} class="btn btn-primary">Course Details</a>
+        </div>
+      </div>
+      {%endfor%}
+    </div>
+  </div>
+
+
+
+{% endblock %}
