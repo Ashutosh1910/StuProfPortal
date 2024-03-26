@@ -52,6 +52,7 @@ def StudentHome(request):
                             student_eval.save()
 
                     student_c.save()
+                    messages.success(request,f'{student_c.course_name} added as it is CDC for your branch')
     
              messages.warning(request,'CDC courses have already been added')
                     
