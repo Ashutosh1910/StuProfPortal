@@ -3,7 +3,7 @@ from django.http import HttpResponseForbidden,Http404,FileResponse
 from django.contrib import messages
 from .models import *
 from ProfPortal.models import Course,Announcement,Study_Material
-from .forms import StudentProfile_Form,ElectiveForm
+from .forms import StudentProfile_Form,ElectiveForm,CGPA_CalcForm
 from allauth.account.models import EmailAddress
 from django.contrib.auth.decorators import login_required,permission_required
 
@@ -130,8 +130,19 @@ def download_material_resource(request,pk):
    response['Content-Disposition']=f'attachment;'
    return response
   
+
     
 @login_required
 @permission_required('ProfPortal.is_student',raise_exception=True)
-def cgpa_calc(request):
-    pass
+def cgpa_calc_view(request):
+    student_courses=Enrolled_Course.objects.filter(enrolled_student=request.user.student_profile)
+    if not student_courses:
+        messages.warning(request,'You have not enrolled in any course')
+        return redirect("StudentHome")
+    if request.method=='POST':
+        for sc in student_courses:
+            sc.expected_grade=request.POST['ex-grade_id'+str(sc.pk)]
+            sc.save()
+        return redirect('cgpa-calc')
+    else:
+        return render(request,'cgpa-calc.html',context={"student_courses":student_courses})

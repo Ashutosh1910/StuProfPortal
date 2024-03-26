@@ -277,6 +277,7 @@ def grade_student(request,pk,pk2):
             
             student_course.student_grade=(request.POST["grade_id"+str(pk2)])
             print(request.POST["grade_id"+str(pk2)])
+            student_course.graded=True
             student_course.save()
             messages.success(request,f'{student_course.enrolled_student.user.first_name} was graded')
             return redirect('course_detail',pk)
