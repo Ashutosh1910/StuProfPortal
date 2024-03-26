@@ -28,6 +28,14 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
+                {%if request.user.profprofile%}
+                <li class="nav-item">
+                    <a class="nav-link" href="{%url 'create-course' %}">Add Course</a>
+                </li>{%endif%}
+                {%if request.user.student_profile%}
+                <li class="nav-item">
+                    <a class="nav-link" href="{%url 'cgpa-calc' %}">CGPA Calculator</a>
+                </li>{%endif%}
                 {%if request.user.is_authenticated%}
                 <li class="nav-item">
                     <a class="nav-link" href="{%url 'LogoutPage'%}">Logout</a>
@@ -37,10 +45,7 @@
                     <a class="nav-link" href="{%url 'login-page'%}">Login</a>
                 </li>
                 {%endif%}
-                {%if request.user.profprofile%}
-                <li class="nav-item">
-                    <a class="nav-link" href="{%url 'create-course' %}">Add Course</a>
-                </li>{%endif%}
+                
                 
                 <!-- Add more navigation items as needed -->
             </ul>
