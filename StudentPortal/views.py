@@ -129,7 +129,7 @@ def download_material_resource(request,pk):
    response=FileResponse(material)
    response['Content-Disposition']=f'attachment;'
    return response
-   
+  
     
 @login_required
 @permission_required('ProfPortal.is_student',raise_exception=True)

@@ -154,7 +154,7 @@ SOCIALACCOUNT_PROVIDERS = {
         'secret': os.getenv('SECRET'),
         'key': '',
         'redirect_uris': [
-            'http://localhost:8000/accounts/google/login/callback/'
+           os.getenv("REDIRECT_URL")
         ],
         'SCOPE': ['profile', 'email'],
     }
