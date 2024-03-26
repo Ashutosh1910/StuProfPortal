@@ -12,15 +12,18 @@
           <div class="col">
                 {% csrf_token %}
                 <div class="form-group mb-0">
-                    <select class="form-control form-control-sm" name="ex-grade_id{{course.pk}}">
-                        <option value="A">A</option>
-                                        <option value="A-">A-</option>
-                                        <option value="B">B</option>
-                                        <option value="B-">B-</option>
-                                        <option value="C">C</option>
-                                        <option value="C-">C-</option>
-                                        <option value="D">D</option>
-                                        <option value="E">E</option>
+                    {{course.expected_grade}}
+                    <select class="form-control form-control-sm" name="ex-grade_id{{course.pk}}" value="{{course.expected_grade}}">
+                        <option value="{{course.expected_grade}}" >{{course.expected_grade}}</option>
+
+                                        <option value="A" >A</option>
+                                        <option value="A-"  >A-</option>
+                                        <option value="B" >B</option>
+                                        <option value="B-"  >B-</option>
+                                        <option value="C" >C</option>
+                                        <option value="C-" >C-</option>
+                                        <option value="D"  >D</option>
+                                        <option value="E"  >E</option>
                     </select>
                 </div>
             </div>
